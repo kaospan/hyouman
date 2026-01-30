@@ -19,8 +19,8 @@ This file tracks all major tasks for the project. Tasks are marked as `[ ]` (not
 
 ### MVP Build (pressure-tested)
 
-- [~] Scope MVP for 30-day build (cut list, non-goals)
-- [~] Pressure-test the idea (collect skeptic objections + answers)
+- [x] Scope MVP for 30-day build (cut list, non-goals)
+- [x] Pressure-test the idea (collect skeptic objections + answers)
 - [ ] Challenge set v0 (10 micro-acts) with anti-automation rationale
 - [ ] API v0 spec (request/submit/score) with acceptance criteria
 - [ ] MVP threat model mapped to surfaces (bots, farms, replay, privacy)
