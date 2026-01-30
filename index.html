@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Proof of Human — MVP</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #050910;
+      --panel: #0d1324;
+      --panel-2: #0f172a;
+      --text: #e9eef7;
+      --muted: #9fb0c9;
+      --accent: #7ef3d2;
+      --accent-2: #ffb454;
+      --danger: #ff6b6b;
+      --success: #7cf29c;
+      --border: rgba(255, 255, 255, 0.06);
+      --glow: 0 10px 30px rgba(126, 243, 210, 0.12);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+      background: radial-gradient(circle at 15% 20%, rgba(126, 243, 210, 0.08), transparent 35%),
+                  radial-gradient(circle at 80% 0%, rgba(255, 180, 84, 0.08), transparent 32%),
+                  var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    header {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 32px 20px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .badge {
+      padding: 6px 12px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      color: var(--muted);
+      font-size: 14px;
+      background: rgba(255, 255, 255, 0.02);
+    }
+    main {
+      max-width: 1080px;
+      margin: 0 auto 64px;
+      padding: 0 20px 32px;
+    }
+    h1 { margin: 8px 0; letter-spacing: -0.02em; }
+    .hero { margin-bottom: 20px; }
+    .hero p { color: var(--muted); max-width: 780px; margin: 0; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 16px;
+    }
+    .card {
+      background: linear-gradient(145deg, var(--panel), var(--panel-2));
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 18px 18px 16px;
+      box-shadow: var(--glow);
+      position: relative;
+      overflow: hidden;
+    }
+    .card h3 { margin: 0 0 6px; }
+    .muted { color: var(--muted); }
+    button {
+      border: none;
+      border-radius: 12px;
+      padding: 10px 14px;
+      font-weight: 600;
+      cursor: pointer;
+      color: #050910;
+      background: linear-gradient(120deg, var(--accent), #5ed3ff);
+      box-shadow: 0 10px 20px rgba(94, 211, 255, 0.18);
+      transition: transform 120ms ease, box-shadow 120ms ease;
+    }
+    button.secondary {
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text);
+      box-shadow: none;
+      border: 1px solid var(--border);
+    }
+    button.danger {
+      background: linear-gradient(120deg, var(--danger), #ff8fa3);
+      color: #fff;
+    }
+    button:active { transform: translateY(1px); }
+    .row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+    textarea, input {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px 12px;
+      color: var(--text);
+      font-family: 'Space Grotesk', sans-serif;
+      resize: vertical;
+    }
+    textarea:focus, input:focus { outline: 1px solid var(--accent); }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .score {
+      font-size: 32px;
+      font-weight: 700;
+    }
+    .stat {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+    }
+    .list { display: flex; flex-direction: column; gap: 8px; margin: 10px 0 0; padding: 0; list-style: none; }
+    .list li { border: 1px solid var(--border); padding: 8px 10px; border-radius: 12px; background: rgba(255, 255, 255, 0.02); }
+    .progress {
+      height: 6px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .progress span {
+      display: block;
+      height: 100%;
+      background: linear-gradient(120deg, var(--accent), #5ed3ff);
+      width: 0;
+    }
+    .small { font-size: 13px; color: var(--muted); }
+    .chip { padding: 4px 8px; border-radius: 999px; background: rgba(255, 255, 255, 0.08); color: var(--muted); font-size: 12px; }
+    code {
+      background: rgba(255, 255, 255, 0.06);
+      padding: 2px 6px;
+      border-radius: 8px;
+    }
+    .footer {
+      margin-top: 22px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    @media (max-width: 640px) {
+      header { flex-direction: column; align-items: flex-start; }
+      .row { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <div class="badge">Proof of Human — pressure-tested MVP</div>
+      <h1>Feel real. Prove present.</h1>
+      <div class="muted">10–30s micro-acts that bots hate and humans pass.</div>
+    </div>
+    <button id="startBtn">Start random challenge</button>
+  </header>
+
+  <main>
+    <section class="grid">
+      <article class="card" id="challengeCard">
+        <div class="row" style="justify-content: space-between;">
+          <h3 id="challengeTitle">No challenge yet</h3>
+          <div class="pill" id="timerPill">Timer: —</div>
+        </div>
+        <p class="muted" id="challengePrompt">Click “Start random challenge” to get a 30-second micro-act.</p>
+
+        <div id="challengeMeta" class="small"></div>
+
+        <div style="margin: 12px 0 6px;">
+          <label for="response" class="small">Your proof (we hash locally, never store raw):</label>
+          <textarea id="response" rows="3" placeholder="Describe what you did, with sensory detail…"></textarea>
+        </div>
+        <div class="row" style="justify-content: space-between; align-items: center;">
+          <div class="row">
+            <button id="submitBtn">Submit proof</button>
+            <button class="secondary" id="failBtn">Mark failed</button>
+          </div>
+          <div class="small" id="expiryHint"></div>
+        </div>
+        <div class="footer" id="challengeFooter">
+          Anti-automation rationale will appear here.
+        </div>
+      </article>
+
+      <article class="card">
+        <h3>Human Score (local, private)</h3>
+        <div class="stat"><span class="score" id="scoreTotal">0</span><span class="muted">/100</span></div>
+        <div class="small" id="scoreMeta">No verifications yet.</div>
+        <div style="margin-top: 8px;">
+          <div class="small">Presence (last 24h)</div>
+          <div class="progress"><span id="presenceBar"></span></div>
+          <div class="small">Continuity (streak)</div>
+          <div class="progress"><span id="continuityBar"></span></div>
+          <div class="small">Accountability (pass rate)</div>
+          <div class="progress"><span id="accountabilityBar"></span></div>
+        </div>
+        <div class="footer">
+          We never send data off-device. Proofs are hashed and kept in localStorage for demo purposes only.
+        </div>
+      </article>
+    </section>
+
+    <section class="grid" style="margin-top: 16px;">
+      <article class="card">
+        <h3>Proof log (local)</h3>
+        <ul class="list" id="logList"></ul>
+        <div class="row" style="margin-top: 8px;">
+          <button class="secondary" id="copyProofBtn">Copy latest proof token</button>
+          <button class="danger" id="clearBtn">Clear local data</button>
+        </div>
+        <div class="small">Tokens are SHA-256 hashes of your prompt + response + salt + timestamp.</div>
+      </article>
+
+      <article class="card">
+        <h3>Integration / API-first mindset</h3>
+        <p class="muted">Front-end only demo. Wire these on your backend:</p>
+        <ul class="list">
+          <li><code>POST /challenge/request</code> → returns prompt, nonce, expiry</li>
+          <li><code>POST /challenge/submit</code> → payload: nonce, hashed proof, modality; returns pass/fail + signed proof</li>
+          <li><code>GET /score</code> → presence, continuity, accountability, freshness</li>
+          <li><code>POST /verify</code> → with user-consented share token; returns boolean + freshness</li>
+          <li><code>POST /webhook</code> → platform receives verification events</li>
+        </ul>
+        <div class="footer">Data handling: discard raw media, persist only proofs + minimal metadata.</div>
+      </article>
+    </section>
+
+    <section class="card" style="margin-top: 16px;">
+      <h3>Why this is expensive for bots (pressure-tested)</h3>
+      <ul class="list" id="antiList"></ul>
+      <div class="footer">Time-bound, environment-aware prompts + randomness make relay markets costly; short expiry defeats precomputation.</div>
+    </section>
+
+    <section class="card" style="margin-top: 16px;">
+      <h3>Deploy to GitHub Pages (no build step)</h3>
+      <ol class="list">
+        <li>Commit <code>index.html</code> to your main branch.</li>
+        <li>In GitHub → Settings → Pages → “Deploy from branch” → select <code>main</code> and <code>/ (root)</code>.</li>
+        <li>Wait ~1 minute; your site lives at <code>https://&lt;user&gt;.github.io/&lt;repo&gt;/</code>.</li>
+        <li>Enable HTTPS; test challenge flow end-to-end in browser.</li>
+      </ol>
+      <div class="footer">Optional: add a custom domain by placing a <code>CNAME</code> file with your domain.</div>
+    </section>
+  </main>
+
+  <script>
+    const challenges = [
+      { id: 'scent', title: 'Describe the nearest scent now', prompt: 'Close your eyes for 3 seconds, breathe, and describe the strongest scent you notice — no metaphors, only plain words.', anti: 'Requires real-time sensory input; AI cannot sniff a room cheaply.' },
+      { id: 'texture', title: 'Touch & describe texture', prompt: 'Touch the most textured object within reach. In 5 words, describe its texture precisely.', anti: 'Needs immediate tactile feedback; bots lack tactile senses and time window blocks outsourcing.' },
+      { id: 'move-object', title: 'Move object low → high', prompt: 'Place a small object on the floor, then on the table. Describe its weight or any sound it made.', anti: 'Physical relocation with sound cues resists automation and replay.' },
+      { id: 'ambient-audio', title: 'Capture ambient sound clue', prompt: 'Listen to the loudest ambient sound right now. Type the first 3 words it makes you think of (no metaphors).', anti: 'Ambient audio is non-deterministic and time-bound; cheap bots can’t predict it.' },
+      { id: 'color', title: 'Find a specific color', prompt: 'Locate something predominantly orange or blue around you. Describe its material and size.', anti: 'Needs live scene scanning; random color reduces pre-scripted answers.' },
+      { id: 'handwritten', title: 'Handwrite today’s date', prompt: 'Write today’s date on paper, hold it up to light, and note the pen/pencil color and pressure feel.', anti: 'Requires handwriting + haptic detail; hard to mass-fake at scale in 30s.' },
+      { id: 'temperature', title: 'Cold/warm contrast', prompt: 'Touch something cold for 3 seconds, then something warm. Describe the contrast in 2 short sentences.', anti: 'Thermal sensation is real-time and environment-specific.' },
+      { id: 'outside', title: 'Step outside / window check', prompt: 'Look outside right now. Name one moving thing and its direction.', anti: 'Live environmental randomness; motion vectors are hard to fake instantly.' },
+      { id: 'word-heard', title: 'Last word you heard', prompt: 'Type the last distinct word you just heard someone say aloud (or from media).', anti: 'Depends on recent, unpredictable audio context.' },
+      { id: 'three-taps', title: 'Tap three surfaces', prompt: 'Tap three different surfaces near you and describe the softest one’s sound in 8–12 words.', anti: 'Multi-surface, audio-temporal act; tough for bots to synthesize quickly.' }
+    ];
+
+    const logKey = 'poh-demo-logs';
+    let currentChallenge = null;
+    let expiresAt = null;
+    let timerInterval = null;
+
+    const els = {
+      title: document.getElementById('challengeTitle'),
+      prompt: document.getElementById('challengePrompt'),
+      meta: document.getElementById('challengeMeta'),
+      footer: document.getElementById('challengeFooter'),
+      timer: document.getElementById('timerPill'),
+      expiry: document.getElementById('expiryHint'),
+      response: document.getElementById('response'),
+      start: document.getElementById('startBtn'),
+      submit: document.getElementById('submitBtn'),
+      fail: document.getElementById('failBtn'),
+      log: document.getElementById('logList'),
+      copy: document.getElementById('copyProofBtn'),
+      clear: document.getElementById('clearBtn'),
+      antiList: document.getElementById('antiList'),
+      scoreTotal: document.getElementById('scoreTotal'),
+      scoreMeta: document.getElementById('scoreMeta'),
+      presence: document.getElementById('presenceBar'),
+      continuity: document.getElementById('continuityBar'),
+      accountability: document.getElementById('accountabilityBar')
+    };
+
+    function pickChallenge() {
+      const idx = Math.floor(Math.random() * challenges.length);
+      return challenges[idx];
+    }
+
+    function startChallenge() {
+      currentChallenge = pickChallenge();
+      expiresAt = Date.now() + 30000; // 30 seconds
+      els.title.textContent = currentChallenge.title;
+      els.prompt.textContent = currentChallenge.prompt;
+      els.meta.textContent = `Modality: text · Expiry: 30s · Randomized seed: ${currentChallenge.id}-${Math.floor(Math.random()*9999)}`;
+      els.footer.textContent = `Why bots hate this: ${currentChallenge.anti}`;
+      els.response.value = '';
+      els.response.focus();
+      els.expiry.textContent = 'Expires 30s after issue.';
+      startTimer();
+      paintAntiList();
+    }
+
+    function startTimer() {
+      stopTimer();
+      timerInterval = setInterval(() => {
+        const remaining = Math.max(0, expiresAt - Date.now());
+        const secs = Math.ceil(remaining / 1000);
+        els.timer.textContent = `Timer: ${secs}s`;
+        if (remaining <= 0) {
+          els.expiry.textContent = 'Expired. Start a new challenge.';
+          stopTimer();
+        }
+      }, 200);
+    }
+
+    function stopTimer() {
+      if (timerInterval) clearInterval(timerInterval);
+      timerInterval = null;
+    }
+
+    function getLogs() {
+      try {
+        return JSON.parse(localStorage.getItem(logKey) || '[]');
+      } catch {
+        return [];
+      }
+    }
+
+    function saveLogs(logs) {
+      localStorage.setItem(logKey, JSON.stringify(logs.slice(-50))); // cap to 50 entries
+    }
+
+    async function hashProof(str) {
+      const encoder = new TextEncoder();
+      const data = encoder.encode(str);
+      const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+      return hashHex;
+    }
+
+    function refreshLog() {
+      const logs = getLogs().sort((a,b) => b.ts - a.ts);
+      els.log.innerHTML = logs.length === 0 ? '<li class="muted">No proofs yet.</li>' : '';
+      logs.forEach(item => {
+        const li = document.createElement('li');
+        li.innerHTML = `<div class="row" style="justify-content: space-between;">
+          <strong>${item.title}</strong><span class="chip" style="color:${item.pass ? 'var(--success)' : 'var(--danger)'}">${item.pass ? 'PASS' : 'FAIL'}</span>
+        </div>
+        <div class="small">${new Date(item.ts).toLocaleString()} · proof ${item.proof.slice(0, 10)}…</div>`;
+        els.log.appendChild(li);
+      });
+    }
+
+    function computeScore() {
+      const logs = getLogs();
+      if (logs.length === 0) {
+        els.scoreTotal.textContent = '0';
+        els.scoreMeta.textContent = 'Complete a challenge to generate a score.';
+        ['presence','continuity','accountability'].forEach(k => els[k].style.width = '0%');
+        return;
+      }
+      const passes = logs.filter(l => l.pass);
+      const lastPass = passes.sort((a,b) => b.ts - a.ts)[0];
+      const now = Date.now();
+      const presence = lastPass && (now - lastPass.ts <= 24*3600*1000) ? 1 : 0;
+
+      // continuity: streak in days with at least one pass
+      const days = new Set();
+      passes.forEach(p => {
+        const day = Math.floor(p.ts / (24*3600*1000));
+        days.add(day);
+      });
+      const today = Math.floor(now / (24*3600*1000));
+      let streak = 0;
+      for (let d = today; days.has(d); d--) streak++;
+      const continuity = Math.min(streak / 5, 1); // cap at 5-day streak for MVP
+
+      const accountability = logs.length ? passes.length / logs.length : 0;
+
+      const score = Math.round(presence*40 + continuity*40 + accountability*20);
+      els.scoreTotal.textContent = score;
+      els.scoreMeta.textContent = `Presence ${presence ? 'fresh' : 'stale'}, streak ${streak} day(s), accountability ${(accountability*100).toFixed(0)}%`;
+      els.presence.style.width = `${presence*100}%`;
+      els.continuity.style.width = `${continuity*100}%`;
+      els.accountability.style.width = `${accountability*100}%`;
+    }
+
+    async function submit(pass = true) {
+      if (!currentChallenge) {
+        alert('Start a challenge first.');
+        return;
+      }
+      if (expiresAt && Date.now() > expiresAt) {
+        alert('Challenge expired. Start a new one.');
+        return;
+      }
+      const resp = els.response.value.trim();
+      if (pass && resp.length < 12) {
+        alert('Give at least a little sensory detail (12+ characters).');
+        return;
+      }
+      const salt = crypto.randomUUID();
+      const proof = await hashProof(`${currentChallenge.id}|${resp}|${salt}|${Date.now()}`);
+      const logEntry = { title: currentChallenge.title, ts: Date.now(), pass, proof };
+      const logs = getLogs();
+      logs.push(logEntry);
+      saveLogs(logs);
+      refreshLog();
+      computeScore();
+      els.expiry.textContent = pass ? 'Submitted. Proof sealed locally.' : 'Marked failed. Retry with a new prompt.';
+      stopTimer();
+    }
+
+    function paintAntiList() {
+      els.antiList.innerHTML = '';
+      challenges.forEach(ch => {
+        const li = document.createElement('li');
+        const active = currentChallenge && currentChallenge.id === ch.id;
+        li.style.borderColor = active ? 'rgba(126, 243, 210, 0.5)' : 'var(--border)';
+        li.innerHTML = `<strong>${ch.title}</strong><div class="small">${ch.anti}</div>`;
+        els.antiList.appendChild(li);
+      });
+    }
+
+    function copyProof() {
+      const logs = getLogs().sort((a,b) => b.ts - a.ts);
+      if (!logs.length) return alert('No proof to copy yet.');
+      navigator.clipboard.writeText(logs[0].proof).then(() => {
+        els.copy.textContent = 'Copied!';
+        setTimeout(() => els.copy.textContent = 'Copy latest proof token', 1500);
+      }).catch(() => alert('Clipboard copy failed.'));
+    }
+
+    function clearAll() {
+      localStorage.removeItem(logKey);
+      refreshLog();
+      computeScore();
+      els.expiry.textContent = 'Data cleared locally.';
+    }
+
+    // wire events
+    els.start.addEventListener('click', startChallenge);
+    els.submit.addEventListener('click', () => submit(true));
+    els.fail.addEventListener('click', () => submit(false));
+    els.copy.addEventListener('click', copyProof);
+    els.clear.addEventListener('click', clearAll);
+
+    // initial paint
+    refreshLog();
+    computeScore();
+    paintAntiList();
+  </script>
+</body>
+</html>
